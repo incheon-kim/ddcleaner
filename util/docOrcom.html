@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+    <head>
+        <style>
+            body{
+                width: 800;
+                height: 600;
+            }
+            .main {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: table;
+                margin: 0 auto;
+                vertical-align: middle;
+                text-align: center;
+            }
+            .main h1,h3{
+                display: table-row;
+                text-align: center;
+                vertical-align: middle;
+            }
+            .btns{
+                display:table-row;
+                margin-left: 10px;
+                margin-right: 10px;
+
+            }
+        </style>
+    </head>
+    <body>
+        <div class='main'>
+            <h1>
+                글 / 댓글 삭제 중 하나를 골라 주세요.
+            </h1>
+            
+            <button class="btns" id="docBtn">글</button>
+            <span></span>
+            <button class="btns" id="comBtn">댓글</button>
+        </div>
+    </body>
+</html>

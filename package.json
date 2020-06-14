@@ -1,0 +1,35 @@
+{
+  "name": "ddcleaner",
+  "version": "1.2.0",
+  "description": "remove everything about you from dogdrip.net",
+  "main": "index.js",
+  "scripts": {
+    "run": "npx electron .",
+    "build": "npx electron-builder"
+  },
+  "author": "Michael Kim",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^9.0.3",
+    "electron-builder": "^22.7.0"
+  },
+  "dependencies": {
+    "async": "^3.2.0",
+    "electron-progressbar": "^1.2.0"
+  },
+  "build":{
+    "productName": "ddcleaner",
+    "appId": "com.michaelkim.ddcleaner",
+    "asar" : true,
+    "win":{
+      "target": ["portable"],
+      "icon": "ico/128.ico"
+    },
+    "extraFiles":[
+      "util/preload.js",
+      "util/askpage.html",
+      "util/requesting.html",
+      "util/docOrcom.html"
+    ]
+  }
+}

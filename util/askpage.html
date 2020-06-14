@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+    <head>
+        <style>
+            body{
+                width: 800;
+                height: 600;
+            }
+            .main {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: table;
+                margin: 0 auto;
+                vertical-align: middle;
+                text-align: center;
+            }
+            .main h1,h3{
+                display: table-row;
+                text-align: center;
+                vertical-align: middle;
+            }
+            .slider{
+                display: table-row;
+                width: 500px;
+                height: 25px;
+                -webkit-appearance: none;
+                appearance: none;
+                background: #d3d3d3;
+                opacity: 0.7;
+                -webkit-transition: .2s;
+                transition: opacity .2s;
+            }
+            .slider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 25px;
+                height: 25px;
+                background:#4CAF50;
+                cursor:pointer;
+            }
+            .slider::-moz-range-thumb {
+                width: 25px; /* Set a specific slider handle width */
+                height: 25px; /* Slider handle height */
+                background: #4CAF50; /* Green background */
+                cursor: pointer; /* Cursor on hover */
+            }
+
+            .rangeBox{
+                width: 80%;
+                margin:0 auto;
+                vertical-align: middle;
+            }
+            #start, #end{
+                border: none;
+                width: 100%;
+            }
+
+            #startBtn{
+                display:table-row;
+            }
+        </style>
+    </head>
+    <body>
+        <div class='main'>
+            <h1>
+                탐색할 페이지 구간을 정해주세요.
+            </h1>
+            <br><br>
+            <input type="range" min="1" max="999" value="1" class="slider" id="pageRange">
+            <br>
+            <table class="rangeBox">
+                <tr>
+                    <td><label>FROM</label></td>
+                    <td><input type="number" value=1 min="1" max="999" id='start'></td>
+                </tr>
+                <tr>
+                    <td><label>TO</label></td>
+                    <td><input type="number" id='end' min="1" value="999" disabled></td>
+                </tr>
+            </table>
+            <button id="startBtn">시작!</button>
+        </div>
+        <script>
+            var slider = document.getElementById('pageRange');
+            var numStart = document.getElementById('start');
+            var numEnd = document.getElementById('end');
+
+            slider.oninput = function (){
+                slider.value = this.value;
+                numStart.value = this.value;
+            }
+            numStart.oninput = function(){
+                var val = this.value>parseInt(numStart.max, 10)?numStart.max:this.value;
+                slider.value = val;
+                numStart.value = val;
+            }
+        </script>
+    </body>
+</html>
