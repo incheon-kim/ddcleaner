@@ -28,7 +28,7 @@
     "mac":{
       "target":["default"],
       "icon": "ico/512.png"
-    }
+    },
     "extraFiles":[
       "util/preload.js",
       "util/askpage.html",
