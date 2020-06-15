@@ -74,8 +74,6 @@ window.onload = () => {
                                 btn.onclick = () => {
                                     window.ipcRenderer.send('start-parse', slider.value);
                                 }
-                                console.log(res.type, res.type=='댓글')
-                                baseURL = res.type == '댓글'?comURL:docURL;
                           });
     }else if(window.location.href.includes("docOrcom")){
         var docBtn = document.getElementById("docBtn");
@@ -92,6 +90,6 @@ window.onload = () => {
     }
 }
 
-window.ipcRenderer.on('go-to-pages', (evt, page)=>{
-    window.location = `${baseURL}&page=${page}`;
+window.ipcRenderer.on('go-to-pages', (evt, res)=>{
+    window.location = `${res.type=='댓글'?comURL:docURL}&page=${res.page}`;
 })

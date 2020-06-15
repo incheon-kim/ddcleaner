@@ -241,7 +241,7 @@ const doWork = () =>{
             app.quit();
         })
         await sleep(2500);
-        webContents.send('go-to-pages', val);
+        webContents.send('go-to-pages', {page: val, type: data.type});
     })
 
     // clear cookie when init
