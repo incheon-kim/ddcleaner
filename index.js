@@ -62,6 +62,7 @@ async function doRequest(){
     req_progress
     .on('completed', ()=>{
         req_progress.detail = "삭제 요청 완료! 종료중...";
+        app.quit();
     })
     .on('aborted', ()=>{
         req_progress.detail = "알수 없는 오류 발생! 종료중...";
@@ -70,6 +71,9 @@ async function doRequest(){
     .on('progress', (value)=>{
         req_progress.detail =`${value}/${data.list.size}`;
     })
+    if(data.list.size == 0){
+        req_progress.setCompleted();
+    }
     
     // async.eachSeries guarantees single rqeuest during iteration.
     eachSeries(data.list,(item, cb)=>{
@@ -143,7 +147,7 @@ const doWork = () =>{
         resizable: false,
         webPreferences:{
             nodeIntegration : false,
-            preload: path.resolve('./util/preload.js')
+            preload: path.resolve(`${process.resourcesPath}/../util/preload.js`)
         }
     });
     let webContents = mainWindow.webContents;
@@ -188,7 +192,7 @@ const doWork = () =>{
         data.csrftoken = res.csrftoken;
         data.totalPages = res.totalPages
 
-        mainWindow.loadFile(path.resolve('./util/askpage.html'));
+        mainWindow.loadFile(path.resolve(`${process.resourcesPath}/../util/askpage.html`));
     });
 
     ipcMain.handle('get-total-pages',(evt)=>{
@@ -234,7 +238,7 @@ const doWork = () =>{
 
         parse_progress
         .on('completed',()=>{
-            mainWindow.loadFile(path.resolve('./util/requesting.html'))
+            mainWindow.loadFile(path.resolve(`${process.resourcesPath}/../util/requesting.html`))
         })
         .on('aborted', ()=>{
             app.quit();
@@ -246,7 +250,7 @@ const doWork = () =>{
     // clear cookie when init
     session.clearStorageData({storages:"cookies"})
             .then(()=>{
-                mainWindow.loadFile(path.resolve('./util/docOrcom.html'));
+                mainWindow.loadFile(path.resolve(`${process.resourcesPath}/../util/docOrcom.html`));
             })
 }
 process.on('uncaughtException', (err)=>{
