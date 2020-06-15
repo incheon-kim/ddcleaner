@@ -141,7 +141,6 @@ const doWork = () =>{
         width: 800,
         height: 600,
         resizable: false,
-        title : "로그인",
         webPreferences:{
             nodeIntegration : false,
             preload: path.resolve('./util/preload.js')
@@ -189,7 +188,7 @@ const doWork = () =>{
         data.csrftoken = res.csrftoken;
         data.totalPages = res.totalPages
 
-        mainWindow.loadURL(path.resolve('./util/askpage.html'));
+        mainWindow.loadFile(path.resolve('./util/askpage.html'));
     });
 
     ipcMain.handle('get-total-pages',(evt)=>{
@@ -235,7 +234,7 @@ const doWork = () =>{
 
         parse_progress
         .on('completed',()=>{
-            mainWindow.loadURL(path.resolve('./util/requesting.html'))
+            mainWindow.loadFile(path.resolve('./util/requesting.html'))
         })
         .on('aborted', ()=>{
             app.quit();
@@ -247,7 +246,7 @@ const doWork = () =>{
     // clear cookie when init
     session.clearStorageData({storages:"cookies"})
             .then(()=>{
-                mainWindow.loadURL(path.resolve('./util/docOrcom.html'));
+                mainWindow.loadFile(path.resolve('./util/docOrcom.html'));
             })
 }
 process.on('uncaughtException', (err)=>{
