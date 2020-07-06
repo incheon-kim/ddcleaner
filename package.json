@@ -1,6 +1,6 @@
 {
   "name": "ddcleaner",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "remove everything about you from dogdrip.net",
   "main": "index.js",
   "scripts": {
