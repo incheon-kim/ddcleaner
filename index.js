@@ -3,6 +3,7 @@ const Progressbar = require('electron-progressbar');
 const path = require('path');
 const https = require('https');
 const {eachSeries} = require('async');
+const isDev = require('electron-is-dev')
 
 let mainWindow;
 
@@ -14,11 +15,23 @@ let data = {
 };
 
 let loginURL = '';
-let cookieNameList = ["__cfduid", "PHPSESSID", "rx_sesskey1", "rx_sesskey2"]
+//let cookieNameList = ["__cfduid", "PHPSESSID", "rx_sesskey1", "rx_sesskey2"]
 let parse_progress, req_progress;
+
+const utilPath = isDev?"./util":`${process.resourcesPath}/../util`;
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function replaceAll(strTemp, strValue1, strValue2){
+    while(1){
+        if( strTemp.indexOf(strValue1) != -1 )
+            strTemp = strTemp.replace(strValue1, strValue2);
+        else
+            break;
+    }
+    return strTemp;
 }
 
 function getReferer(args){
@@ -68,9 +81,6 @@ async function doRequest(){
         req_progress.detail = "알수 없는 오류 발생! 종료중...";
         app.quit();
     })
-    .on('progress', (value)=>{
-        req_progress.detail =`${value}/${data.list.size}`;
-    })
     if(data.list.size == 0){
         req_progress.setCompleted();
     }
@@ -108,12 +118,12 @@ async function doRequest(){
     
                 res.on('end', ()=>{
                     var body = Buffer.concat(chunks);
-                    console.log(unescape(body.toString()), item.docu, item.comm);
+                    var resultMsg = JSON.parse(unescape(replaceAll(body.toString(), "\\", "%"))).message;
                     if(!req_progress.isCompleted()){
                         req_progress.value+=1;
+                        req_progress.detail = `[${req_progress.value}/${data.list.size}] [메세지 : ${resultMsg}]<br>${item.innerText}`
                     }
                     cb();
-                    
                 });
     
                 res.on("error", (err)=>{
@@ -130,7 +140,7 @@ async function doRequest(){
             req.write(postData);
     
             req.end();
-        }, 800);
+        }, 3000);
     },(err)=>{
         if(err){
             console.error(err);
@@ -147,7 +157,7 @@ const doWork = () =>{
         resizable: false,
         webPreferences:{
             nodeIntegration : false,
-            preload: path.resolve(`${process.resourcesPath}/../util/preload.js`)
+            preload: path.resolve(`${utilPath}/preload.js`)
         }
     });
     let webContents = mainWindow.webContents;
@@ -184,15 +194,13 @@ const doWork = () =>{
         });
 
         cookies.forEach((cookie, idx)=>{
-            if(cookieNameList.includes(cookie.name)){
-                data.cookies += idx==cookies.length-1?`${cookie.name}=${cookie.value}`:`${cookie.name}=${cookie.value}; `;
-            }
+            data.cookies += idx==cookies.length-1?`${cookie.name}=${cookie.value}`:`${cookie.name}=${cookie.value}; `;
         });
-
+        console.log(data.cookies);
         data.csrftoken = res.csrftoken;
         data.totalPages = res.totalPages
 
-        mainWindow.loadFile(path.resolve(`${process.resourcesPath}/../util/askpage.html`));
+        mainWindow.loadFile(path.resolve(`${utilPath}/askpage.html`));
     });
 
     ipcMain.handle('get-total-pages',(evt)=>{
@@ -238,7 +246,7 @@ const doWork = () =>{
 
         parse_progress
         .on('completed',()=>{
-            mainWindow.loadFile(path.resolve(`${process.resourcesPath}/../util/requesting.html`))
+            mainWindow.loadFile(path.resolve(`${utilPath}/requesting.html`))
         })
         .on('aborted', ()=>{
             app.quit();
@@ -250,7 +258,7 @@ const doWork = () =>{
     // clear cookie when init
     session.clearStorageData({storages:"cookies"})
             .then(()=>{
-                mainWindow.loadFile(path.resolve(`${process.resourcesPath}/../util/docOrcom.html`));
+                mainWindow.loadFile(path.resolve(`${utilPath}/docOrcom.html`));
             })
 }
 process.on('uncaughtException', (err)=>{

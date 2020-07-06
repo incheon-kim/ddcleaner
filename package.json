@@ -15,21 +15,26 @@
   },
   "dependencies": {
     "async": "^3.2.0",
+    "electron-is-dev": "^1.2.0",
     "electron-progressbar": "^1.2.0"
   },
-  "build":{
+  "build": {
     "productName": "ddcleaner",
     "appId": "com.michaelkim.ddcleaner",
-    "asar" : true,
-    "win":{
-      "target": ["portable"],
+    "asar": true,
+    "win": {
+      "target": [
+        "portable"
+      ],
       "icon": "ico/128.ico"
     },
-    "mac":{
-      "target":["default"],
+    "mac": {
+      "target": [
+        "default"
+      ],
       "icon": "ico/512.png"
     },
-    "extraFiles":[
+    "extraFiles": [
       "util/preload.js",
       "util/askpage.html",
       "util/requesting.html",

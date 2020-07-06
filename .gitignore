@@ -3,3 +3,6 @@ dist
 
 #macos
 .DS_Store
+
+#Jetbrain
+.idea

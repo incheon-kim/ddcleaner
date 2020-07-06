@@ -36,11 +36,13 @@ if(window.location.href.includes('dogdrip.net')){
                                     if(type == '댓글'){
                                         return {
                                             docu : matches[1],
-                                            comm : matches[2]
+                                            comm : matches[2],
+                                            innerText: node.innerText,
                                         }
                                     }else{
                                         return {
-                                            docu : matches[1]
+                                            docu : matches[1],
+                                            innerText: node.innerText,
                                         }
                                     }
                                 }
