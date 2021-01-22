@@ -29,9 +29,9 @@ if(window.location.href.includes('dogdrip.net')){
         var nodes = document.querySelectorAll("#main > div > div.eq.section.secontent.background-color-content > section > table > tbody > tr > td:nth-child(2) > a");
         var result = Array.from(nodes).map((node)=>{
                             if(node.innerText !== "[삭제 되었습니다]"){
-                                var re = type=='댓글'?'document_srl=(.*)&_comment_srl=(.*)#':'dogdrip\.net\/(.*)';
+                                var re = type=='댓글'?'document_srl=(.*)&comment_srl=(.*)#':'dogdrip\.net\/(.*)';
                                 var matches = node.href.match(re);
-
+                                
                                 if(matches[1] !== undefined){
                                     if(type == '댓글'){
                                         return {
